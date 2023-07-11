@@ -8,35 +8,6 @@
 
 #define MAX_LINE_LENGTH 10000
 
-void readFile(char *input_file){
-
-    FILE *archive;
-    char line[MAX_LINE_LENGTH];
-    char **matrix;
-    int i, num_lines = 0;
-
-    archive = fopen(input_file,"r");
-    if (archive == NULL) {
-        printf("No se pudo abrir el archivo.\n");
-        exit(1);
-    }
-
-    while (fgets(line, MAX_LINE_LENGTH, archive) != NULL) {
-        num_lines++;
-    }
-
-    matrix = (char **)malloc(num_lines * sizeof(char *));
-    rewind(archive);
-
-    for (i = 0; i < num_lines; i++) {
-        fgets(line, MAX_LINE_LENGTH, archive);
-        matrix[i] = (char *)malloc((strlen(line) + 1) * sizeof(char));
-        strcpy(matrix[i], line);
-    }
-
-    fclose(archive);
-}
-
 char *recognizer(char* f){
 
     int state = 1;
@@ -103,29 +74,45 @@ char *recognizer(char* f){
     return f;
 }
 
-void writeFile(char *outputFile, char** f){
-
+void writeFile(char *outputFile, int numLines, char** f){
     FILE *archive;
     int i;
 
-    //Se crea el archivo
+    //Se crea el archivo de salida con el nombre ingresado por consola y se abre en modo escritura
     archive = fopen(outputFile,"w");
 
-    if(archive == NULL) {
-        printf("Error al abrir el archivo.\n");
-        exit(1);
-        }
-    fprintf(archive, "Resultado \n");
-    fclose(archive); // Cierra el archivo
-
-    //Se modifica 
-    archive = fopen(outputFile,"a");
-
+    //Si no se pudo crear el archivo, se imprime mensaje de error y se termina la ejecución
     if(archive == NULL) {
         printf("Error al abrir el archivo.\n");
         exit(1);
     }
 
+    //Se cierra el archivo de salida    
+    fclose(archive);
+
+    //Se modifica el archivo de salida con la información de las expresiones regulares y no regulares
+    archive = fopen(outputFile, "a");
+
+    //Si no se pudo abrir el archivo, se imprime mensaje de error y se termina la ejecución
+    if(archive == NULL) {
+        printf("Error al abrir el archivo.\n");
+        exit(1);
+    }
+
+    //Se recorre la matriz de expresiones regulares y no regulares
+    for(int i = 0; i < numLines; i++){
+        for(int j = 0; j < strlen(f[i]); j++){
+            //Se escribe en el archivo de salida
+            fprintf(archive, "%c", f[i][j]);
+        }
+    }
+
     fclose(archive); // Cierra el archivo
 
+}
+
+void printSolution(char** f, int numLines){
+    for(int i = 0; i < numLines; i++){
+        printf("%s", f[i]);
+    }
 }

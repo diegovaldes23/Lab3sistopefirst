@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <getopt.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <string.h>
 #include "funciones.h"
 
 //Variables globales obtenidas mediante consola
@@ -15,7 +18,7 @@ FILE *f;
 
 //Declaración del mutex global
 pthread_mutex_t mutex;
-
+pthread_mutex_t mutex2;
 
 /*
 Entrada: ID de la hebra
@@ -29,6 +32,8 @@ void *hebra(void *id){
     //Arreglo para almacenar cada línea leída
     char buffer[256];
     //Mientras no se llegue al final del archivo, se leen las líneas
+    pthread_mutex_lock(&mutex2);
+    int j = 0;
     while(feof(f) == 0){
         //Entrando a sección crítica
         pthread_mutex_lock(&mutex);
@@ -51,11 +56,15 @@ void *hebra(void *id){
             printf("Hebra %ld: %s\n", *myID, reconoce);
 
             //Se almacena en la matriz la línea del archivo
-            //matrix[i] = reconoce;
+            for(int k = 0; k < strlen(reconoce); k++){
+                matrix[j][k] = reconoce[k];
+            }
         }
+        j++;
         //Saliendo de sección crítica
         pthread_mutex_unlock(&mutex);
     }
+    pthread_mutex_unlock(&mutex2);
     //Se termina la ejecución de la hebra
     pthread_exit(NULL);
 }
@@ -162,12 +171,12 @@ int main(int argc, char *argv[]){
 
     //Si b es verdadero, se imprimen los resultados por consola
     if(b == 1){
-        //imprimirProps(n,matrix);
+        printSolution(matrix, numLines);
     }
 
     //Se escribe en el archivo de salida
-    //escribirSalida(n, output_file, matrix);
-    //free(matrix);
+    writeFile(outputFile, numLines, matrix);
+    free(matrix);
     //Se destruye el mutex
     pthread_mutex_destroy(&mutex);
 }
