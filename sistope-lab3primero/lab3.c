@@ -21,9 +21,9 @@ pthread_mutex_t mutex;
 pthread_mutex_t mutex2;
 
 /*
-Entrada: ID de la hebra
-Salida: 
-Descripción: 
+Entrada: ID de la hebra.
+Salida: Nada.
+Descripción: Función que ejecuta cada hebra para leer el archivo y almacenar las líneas en la matriz.
 */
 void *hebra(void *id){
     //ID de la hebra
@@ -53,6 +53,9 @@ void *hebra(void *id){
             //Se obtiene la línea del archivo y si es una expresión regular o no aceptada
             //por el autómata
             char* reconoce = recognizer(buffer);
+
+            //Se imprime el número de chunk y el id de la hebra que lo procesó
+            printf("Chunk %d procesado por hebra %ld\n", i+1, *myID);
             
             //Si el final del reconocedor es una i, se almacena un 1 en el arreglo de booleanos
             if(reconoce[strlen(reconoce)-2] == 'i'){
