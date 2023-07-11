@@ -70,8 +70,8 @@ void *hebra(void *id){
             for(int k = 0; k < strlen(reconoce); k++){
                 matrix[j][k] = reconoce[k];
             }
+            j++;
         }
-        j++;
         //Saliendo de sección crítica
         pthread_mutex_unlock(&mutex);
     }

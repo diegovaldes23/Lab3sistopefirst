@@ -127,6 +127,7 @@ void writeFile(char *outputFile, int numLines, char** f, int* booleans){
 }
 
 void printSolution(char** f, int numLines, int* booleans){
+
     for(int i = 0; i < numLines; i++){
         printf("%s", f[i]);
     }
