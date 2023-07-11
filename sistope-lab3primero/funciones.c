@@ -74,7 +74,7 @@ char *recognizer(char* f){
     return f;
 }
 
-void writeFile(char *outputFile, int numLines, char** f){
+void writeFile(char *outputFile, int numLines, char** f, int* booleans){
     FILE *archive;
     int i;
 
@@ -106,6 +106,21 @@ void writeFile(char *outputFile, int numLines, char** f){
             fprintf(archive, "%c", f[i][j]);
         }
     }
+
+    int expresionesRegulares = 0;
+    int expresionesNoRegulares = 0;
+    for(int i = 0; i < numLines; i++){
+        if(booleans[i] == 1){
+            expresionesRegulares++;
+        }else{
+            expresionesNoRegulares++;
+        }
+    }
+    fprintf(archive, "\n");
+
+    fprintf(archive, "Total de expresiones que Si son regulares: %d\n", expresionesRegulares);
+    fprintf(archive, "Total de expresiones que No son regulares: %d\n", expresionesNoRegulares);
+    fprintf(archive, "Total de lineas leídas: %d\n", numLines);
 
     fclose(archive); // Cierra el archivo
 

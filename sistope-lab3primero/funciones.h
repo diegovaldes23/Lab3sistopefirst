@@ -15,6 +15,6 @@ Descripción: Recorre cada caracter de la linea y realiza el reconocimiento de l
 char *recognizer(char* f);
 
 
-void writeFile(char* outputFile, int numLines, char** f);
+void writeFile(char* outputFile, int numLines, char** f, int* booleans);
 
 void printSolution(char** f, int numLines);

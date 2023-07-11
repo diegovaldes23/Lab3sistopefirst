@@ -31,9 +31,11 @@ void *hebra(void *id){
 
     //Arreglo para almacenar cada línea leída
     char buffer[256];
-    //Mientras no se llegue al final del archivo, se leen las líneas
+    //Se entra a sección crítica
     pthread_mutex_lock(&mutex2);
+    //Se inicializa el contador de líneas
     int j = 0;
+    //Mientras no se llegue al final del archivo, se leen las líneas
     while(feof(f) == 0){
         //Entrando a sección crítica
         pthread_mutex_lock(&mutex);
@@ -51,19 +53,15 @@ void *hebra(void *id){
             //Se obtiene la línea del archivo y si es una expresión regular o no aceptada
             //por el autómata
             char* reconoce = recognizer(buffer);
-
-            //Se imprime el id de la hebra y la línea del archivo con su respectivo booleano
-            printf("Hebra %ld: %s\n", *myID, reconoce);
             
             //Si el final del reconocedor es una i, se almacena un 1 en el arreglo de booleanos
             if(reconoce[strlen(reconoce)-2] == 'i'){
                 booleans[j] = 1;
+
+            //Si el final del reconocedor es una o, se almacena un 0 en el arreglo de booleanos
             }else if(reconoce[strlen(reconoce)-2] == 'o'){
                 booleans[j] = 0;
             }
-
-            //Si el final del reconocedor es una o, se almacena un 0 en el arreglo de booleanos
-
 
             //Se almacena en la matriz la línea del archivo
             for(int k = 0; k < strlen(reconoce); k++){
@@ -74,6 +72,7 @@ void *hebra(void *id){
         //Saliendo de sección crítica
         pthread_mutex_unlock(&mutex);
     }
+    //Saliendo de sección crítica
     pthread_mutex_unlock(&mutex2);
     //Se termina la ejecución de la hebra
     pthread_exit(NULL);
@@ -182,11 +181,6 @@ int main(int argc, char *argv[]){
         pthread_join(threadsArray[i], NULL);
     }
 
-    //Se imprimen los booleanos
-    for(int i = 0; i < numLines; i++){
-        printf("%d ", booleans[i]);
-    }
-
     printf("\n");
 
     //Si b es verdadero, se imprimen los resultados por consola
@@ -195,8 +189,11 @@ int main(int argc, char *argv[]){
     }
 
     //Se escribe en el archivo de salida
-    writeFile(outputFile, numLines, matrix);
+    writeFile(outputFile, numLines, matrix, booleans);
+
+    //Se libera la memoria de la matriz
     free(matrix);
+
     //Se destruye el mutex
     pthread_mutex_destroy(&mutex);
 }
