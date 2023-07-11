@@ -8,5 +8,5 @@ lab3: funciones.o lab3.c
 clean:
 	rm -f *.o lab3
 run_all:
-	./lab3 -i prueba_10.txt -o salida_10.txt -h 10 -c 3 -b
+	./lab3 -i prueba_10.txt -o salida_10.txt -h 5 -c 3 -b
 	

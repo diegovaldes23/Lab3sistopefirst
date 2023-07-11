@@ -9,6 +9,8 @@
 //Variables globales obtenidas mediante consola
 int threads = 0, chunkSize = 0, option, b = 0, chunk;
 int* booleans;
+long* chunks;
+pthread_t* idThreads;
 
 //Puntero a matriz para almacenar los caracteres del archivo a leer
 char** matrix;
@@ -158,6 +160,9 @@ int main(int argc, char *argv[]){
     //Se calcula el número de chunks que se deben leer del archivo
     chunk = (numLines/chunkSize);
 
+    //Se almacena memoria para el arreglo de hebras
+    idThreads = (pthread_t *)malloc(threads * sizeof(pthread_t));
+
     //Se almacena memoria para la matriz.
     matrix = (char **)malloc(numLines * sizeof(char *));
     for(int i = 0; i < numLines; i++){
@@ -197,6 +202,7 @@ int main(int argc, char *argv[]){
     //Se libera la memoria de la matriz
     free(matrix);
 
-    //Se destruye el mutex
+    //Se destruyen los mutex
     pthread_mutex_destroy(&mutex);
+    pthread_mutex_destroy(&mutex2);
 }
