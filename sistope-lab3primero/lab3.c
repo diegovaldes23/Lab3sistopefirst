@@ -185,7 +185,7 @@ int main(int argc, char *argv[]){
 
     //Si b es verdadero, se imprimen los resultados por consola
     if(b == 1){
-        printSolution(matrix, numLines);
+        printSolution(matrix, numLines, booleans);
     }
 
     //Se escribe en el archivo de salida
