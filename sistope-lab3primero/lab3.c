@@ -54,6 +54,16 @@ void *hebra(void *id){
 
             //Se imprime el id de la hebra y la línea del archivo con su respectivo booleano
             printf("Hebra %ld: %s\n", *myID, reconoce);
+            
+            //Si el final del reconocedor es una i, se almacena un 1 en el arreglo de booleanos
+            if(reconoce[strlen(reconoce)-2] == 'i'){
+                booleans[j] = 1;
+            }else if(reconoce[strlen(reconoce)-2] == 'o'){
+                booleans[j] = 0;
+            }
+
+            //Si el final del reconocedor es una o, se almacena un 0 en el arreglo de booleanos
+
 
             //Se almacena en la matriz la línea del archivo
             for(int k = 0; k < strlen(reconoce); k++){
@@ -152,6 +162,9 @@ int main(int argc, char *argv[]){
         matrix[i] = (char *)malloc(63 * sizeof(char));
     }
 
+    //Se almacena memoria para el arreglo de booleanos
+    booleans = (int *)malloc(numLines * sizeof(int));
+
     //Se almacena memoria para el arreglo de hebras
     pthread_t threadsArray[threads]; 
 
@@ -168,6 +181,13 @@ int main(int argc, char *argv[]){
     for(int i = 0; i < threads; i++){
         pthread_join(threadsArray[i], NULL);
     }
+
+    //Se imprimen los booleanos
+    for(int i = 0; i < numLines; i++){
+        printf("%d ", booleans[i]);
+    }
+
+    printf("\n");
 
     //Si b es verdadero, se imprimen los resultados por consola
     if(b == 1){
