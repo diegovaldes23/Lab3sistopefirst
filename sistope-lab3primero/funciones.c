@@ -8,9 +8,6 @@
 
 #define MAX_LINE_LENGTH 10000
 
-
-
-
 void readFile(char *input_file){
 
     FILE *archive;
@@ -38,56 +35,56 @@ void readFile(char *input_file){
     }
 
     fclose(archive);
-   
-
-
 }
 
-char recognizer(char* f){
+char *recognizer(char* f){
 
-    
-    int state = 0;
+    int state = 1;
 
     for (int j = 0; j < strlen(f); j++) {
         char c = f[j];
 
         switch (state) {
-            case 0:
-                if (c == 'A' || c == 'C' || c == 'T') {
-                    state = 1;
-                } else {
-                    state = -1;
-                }
-                break;
-
             case 1:
-                if (c == 'G') {
+                if(c == 'A' || c == 'C' || c == 'T'){
+                    state = 1;
+                }else if(c == 'G'){
                     state = 2;
-                } else if (c != 'A' && c != 'C' && c != 'T') {
+                }else{
                     state = -1;
                 }
                 break;
 
             case 2:
-                if (c == 'T') {
+                if(c == 'G'){
+                    state = 2;
+                }else if(c == 'A' || c == 'C'){
+                    state = 1;
+                }else if(c == 'T'){
                     state = 3;
-                } else {
+                }else{
                     state = -1;
                 }
                 break;
 
             case 3:
-                if (c == 'C') {
+                if(c == 'A'){
+                    state = 1;
+                }else if(c == 'G'){
+                    state = 2;
+                }else if(c == 'C'){
                     state = 4;
-                } else if (c != 'A' && c != 'G' && c != 'T') {
+                }else if(c == 'T'){
+                    state = 3;
+                }else{
                     state = -1;
                 }
                 break;
 
             case 4:
-                if (c == 'A' || c == 'C' || c == 'G' || c == 'T') {
-                    state = 3;
-                } else {
+                if(c == 'A' || c == 'C' || c == 'G' || c == 'T'){
+                    state = 4;
+                }else{
                     state = -1;
                 }
                 break;
@@ -97,37 +94,37 @@ char recognizer(char* f){
         }
     }
 
-    if (state == 4) {
-        return f+' SI';
-    } else {
-        return f+' NO';
+    if(state == 4){
+        strcat(f, " si\n");
+    }else{
+        strcat(f, " no\n");
     }
-
-    return f;
     
+    return f;
 }
 
-void writeFile(char *output_file,char** f){
+void writeFile(char *outputFile, char** f){
 
     FILE *archive;
     int i;
 
     //Se crea el archivo
-    archive = fopen(output_file,"w");
+    archive = fopen(outputFile,"w");
 
-    if (archive == NULL) {
-    printf("Error al abrir el archivo.\n");
-    exit(1);}
+    if(archive == NULL) {
+        printf("Error al abrir el archivo.\n");
+        exit(1);
+        }
     fprintf(archive, "Resultado \n");
     fclose(archive); // Cierra el archivo
 
     //Se modifica 
-    archive = fopen(output_file,"a");
+    archive = fopen(outputFile,"a");
 
-    if (archive == NULL) {
-    printf("Error al abrir el archivo.\n");
-    exit(1);}
-
+    if(archive == NULL) {
+        printf("Error al abrir el archivo.\n");
+        exit(1);
+    }
 
     fclose(archive); // Cierra el archivo
 

@@ -10,21 +10,19 @@
 /*
 Entrada:Archivo txt a leer
 Salidas: Se guarda la matriz del texto
-Descripcion: Recorre cada caracter de la linea y la guarda en una matriz
- */
+Descripción: Recorre cada caracter de la linea y la guarda en una matriz*/
 void readFile(char* input_file);
 
 /*
 Entrada:Funcion f que contiene la matriz del texto
 Salidas: Retorna la cantidad de expresiones regulares y las que no son con sus respectivo booleano [si,no]
-Descripcion: Recorre cada caracter de la linea y realiza el reconocimiento de la expresion verificando las lineas que son expresiones regulares y las que no 
+Descripción: Recorre cada caracter de la linea y realiza el reconocimiento de la expresion verificando las lineas que son expresiones regulares y las que no 
  */
-char recognizer(char* f);
+char *recognizer(char* f);
 
 /*
-Entrada:Un archivo txt donde guardar la info y Funcion f .
+Entrada: Un archivo txt donde guardar la info y Funcion f .
 Salidas: Retorna la cantidad de expresiones regulares y las que no son con sus respectivo booleano [si,no] en el txt salida
 Descripcion: Recorre cada la linea guardandolas en el txt con su respectivo [si,no] y se imprimen 
 las cantidades de las que son expresiones regulares y las que no */
-
-void writeFile(char* output_file,char** f);
+void writeFile(char* outputFile, char** f);
